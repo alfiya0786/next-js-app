@@ -8,10 +8,16 @@ on:
 jobs:
   deploy:
 
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
-    - run: docker build . -t alfiya7/next-js-app:latest
-    - run: echo "${{secrets.DOCKER_PASSWORD}}" | docker login -u ${{secrets.DOCKER_USERNAME}} --password-stdin 
-    - run: docker push alfiya7/next-js-app:latest
+    
+    - name: Build Docker image
+      run: docker build . -t alfiya7/next-js-app:latest
+    
+    - name: Login to Docker Hub
+      run: echo "${{secrets.DOCKER_PASSWORD}}" | docker login -u ${{secrets.DOCKER_USERNAME}} --password-stdin 
+    
+    - name: Push to Docker Hub
+      run: docker push alfiya7/next-js-app:latest
